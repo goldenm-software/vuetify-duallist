@@ -1,0 +1,18 @@
+{
+  "name": "vuetify-dual-list",
+  "version": "1.0.2",
+  "description": "An DualList component for Vuetify (VueJS)",
+  "keywords": ["duallist", "dual list", "vue", "vuetify", "goldenm", "software", "duallist for vue"],
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/goldenm-software/vuetify-duallist",
+    "type": "git"
+  },
+  "contributors": [
+    "Kenny Mochizuki Escalona <kenny@goldenmcorp.com>"
+  ],
+  "author": "Golden M Software <software@goldenmcorp.com>",
+  "files": ["index.js", "lib/*.vue"],
+  "license": "MIT",
+  "private": false
+}
