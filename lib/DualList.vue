@@ -53,19 +53,19 @@
         </v-flex>
         
         <v-flex xs12 md2 style="height: 100%; margin: auto; display: flex; flex-direction: column; align-items: center;">
-          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('selected')">
+          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('selected')">
             <v-icon medium>{{ icons.nextAll }}</v-icon>
           </v-btn>
 
-          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('selected')">
+          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('selected')">
             <v-icon medium>{{ icons.next }}</v-icon>
           </v-btn>
 
-          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('options')">
+          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('options')">
             <v-icon medium>{{ icons.prev }}</v-icon>
           </v-btn>
 
-          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('options')">
+          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('options')">
             <v-icon medium>{{ icons.prevAll }}</v-icon>
           </v-btn>
         </v-flex>

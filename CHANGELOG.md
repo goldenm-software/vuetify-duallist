@@ -1,5 +1,9 @@
 # vuetify-dual-list
 
+## Version 1.0.4
+### Changed
+* Bug fixed
+
 ## Version 1.0.3
 ### Added
 * Pre Selected field

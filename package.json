@@ -1,6 +1,6 @@
 {
   "name": "vuetify-dual-list",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An DualList component for Vuetify (VueJS)",
   "keywords": ["duallist", "dual list", "vue", "vuetify", "goldenm", "software", "duallist for vue"],
   "main": "index.js",
