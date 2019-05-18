@@ -29,6 +29,7 @@
                     :key="items[position][keys.primary]"
                     avatar
                     ripple
+                    :disabled="disabled"
                     :class="getColor(position)"
                     @click="toggleToSelected(position)"
                   >
@@ -52,19 +53,19 @@
         </v-flex>
         
         <v-flex xs12 md2 style="height: 100%; margin: auto; display: flex; flex-direction: column; align-items: center;">
-          <v-btn fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('selected')">
+          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('selected')">
             <v-icon medium>{{ icons.nextAll }}</v-icon>
           </v-btn>
 
-          <v-btn fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('selected')">
+          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('selected')">
             <v-icon medium>{{ icons.next }}</v-icon>
           </v-btn>
 
-          <v-btn fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('options')">
+          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('options')">
             <v-icon medium>{{ icons.prev }}</v-icon>
           </v-btn>
 
-          <v-btn fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('options')">
+          <v-btn :disabled="disabled" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('options')">
             <v-icon medium>{{ icons.prevAll }}</v-icon>
           </v-btn>
         </v-flex>
@@ -92,6 +93,7 @@
                     :key="items[position][keys.primary]"
                     avatar
                     ripple
+                    :disabled="disabled"
                     :class="getColor(position, 'selected')"
                     @click="toggleToOptions(position)"
                   >
@@ -131,11 +133,27 @@ export default {
     },
     dense: {
       type: Boolean,
-      default: false
+      default () {
+        return false
+      }
+    },
+    disabled: {
+      type: Boolean,
+      default () {
+        return false
+      }
     },
     dark: {
       type: Boolean,
-      default: false
+      default () {
+        return false
+      }
+    },
+    preSelected: {
+      type: Array,
+      default () {
+        return []
+      }
     },
     i18n: {
       type: Object,
@@ -182,7 +200,11 @@ export default {
       this.options = []
       this.selected = []
       for (let i in newVal) {
-        this.options.push(parseInt(i))
+        if (this.preSelected.includes(newVal[i])) {
+          this.selected.push(parseInt(i))
+        } else {
+          this.options.push(parseInt(i))
+        }
       }
     },
 
@@ -199,7 +221,11 @@ export default {
 
   created () {
     for (let i in this.items) {
-      this.options.push(parseInt(i))
+      if (this.preSelected.includes(this.items[i])) {
+        this.selected.push(parseInt(i))
+      } else {
+        this.options.push(parseInt(i))
+      }
     }
 
     document.addEventListener('keydown', this.validateKey)

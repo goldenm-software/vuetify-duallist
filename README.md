@@ -1,4 +1,4 @@
-# vuetify-dual-liast
+# vuetify-dual-list
 
 vuetify-dual-list is a Vuetify component for VueJS.
 
@@ -14,7 +14,7 @@ yarn add vuetify-dual-list
 
 ```vue
 <template>
-  <dual-list :items="items" :keys="keys" :i18n="i18n" :dense="dense" :dark="dark" @selected="attachItems" />
+  <dual-list :icons="icons" :preSelected="preSelected" :items="items" :keys="keys" :i18n="i18n" :dense="dense" :dark="dark" @selected="attachItems" />
 </template>
 
 <script>
@@ -36,6 +36,13 @@ export default {
         findIn: '',
         noData: ''
       },
+      icons: { // Optional
+        prevAll: '',
+        prev: '',
+        next: '',
+        nextAll: ''
+      },
+      preSelected: [] // Optional
       dense: false, // Optional
       dark: false // Optional
     }
