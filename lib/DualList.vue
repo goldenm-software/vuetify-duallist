@@ -26,7 +26,7 @@
                 <template v-for="(position, i) in options">
                   <v-list-tile
                     v-if="validFilter(position, search.options)"
-                    :key="items[position][keys.primary]"
+                    :key="`option-${i}`"
                     avatar
                     ripple
                     :disabled="disabled"
@@ -90,7 +90,7 @@
                 <template v-for="(position, i) in selected">
                   <v-list-tile
                     v-if="validFilter(position, search.selected)"
-                    :key="items[position][keys.primary]"
+                    :key="`selected-${i}`"
                     avatar
                     ripple
                     :disabled="disabled"
