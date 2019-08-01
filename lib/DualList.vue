@@ -5,7 +5,7 @@
     </template>
 
     <v-container v-else fluid>
-      <v-layout row wrap>
+      <v-layout row wrap pa-2>
         <v-flex xs12 md5>
           <v-layout row wrap>
             <v-flex xs12 class="pb-0">
@@ -23,27 +23,26 @@
 
             <v-flex xs12 style="height: 350px; overflow-y: scroll;" class="pa-0 mt-0">
               <v-list :dense="dense" :dark="dark">
-                <template v-for="(position, i) in options">
-                  <v-list-tile
-                    v-if="validFilter(position, search.options)"
+                <template v-for="(item, i) in options">
+                  <v-list-item
+                    v-if="validFilter(item, search.options)"
                     :key="`option-${i}`"
-                    avatar
                     ripple
                     :disabled="disabled"
-                    :class="getColor(position)"
-                    @click="toggleToSelected(position)"
+                    :class="getColor(item, 'options')"
+                    @click="toggleToSelected(item)"
                   >
-                    <v-list-tile-content>
-                      <h6 class="pa-0 ma-0">{{ items[position][keys.primary] }}</h6>
-                    </v-list-tile-content>
+                    <v-list-item-content>
+                      <h6 class="pa-0 ma-0">{{ item[itemText] }}</h6>
+                    </v-list-item-content>
 
-                    <v-list-tile-action>
-                      <small style="opacity: 0.7;">{{ items[position][keys.secondary] }}</small>
-                    </v-list-tile-action>
-                  </v-list-tile>
+                    <v-list-item-action v-if="itemAlt !== ''">
+                      <small style="opacity: 0.7;">{{ item[itemAlt] }}</small>
+                    </v-list-item-action>
+                  </v-list-item>
 
                   <v-divider
-                    v-if="i + 1 < options.length && validFilter(position, search.options)"
+                    v-if="i + 1 < options.length && validFilter(item, search.options)"
                     :key="i"
                   />
                 </template>
@@ -53,19 +52,19 @@
         </v-flex>
         
         <v-flex xs12 md2 style="height: 100%; margin: auto; display: flex; flex-direction: column; align-items: center;">
-          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('selected')">
+          <v-btn :disabled="disabled" :text="dark" fab small :color="dark ? 'white' : 'primary'" @click="toggleAll('selected')">
             <v-icon medium>{{ icons.nextAll }}</v-icon>
           </v-btn>
 
-          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('selected')">
+          <v-btn :disabled="disabled" :text="dark" fab small :color="dark ? 'white' : 'primary'" @click="toggleToList('selected')">
             <v-icon medium>{{ icons.next }}</v-icon>
           </v-btn>
 
-          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleToList('options')">
+          <v-btn :disabled="disabled" :text="dark" fab small :color="dark ? 'white' : 'primary'" @click="toggleToList('options')">
             <v-icon medium>{{ icons.prev }}</v-icon>
           </v-btn>
 
-          <v-btn :disabled="disabled" :flat="dark" fab small ripple :color="dark ? 'white' : 'primary'" @click="toggleAll('options')">
+          <v-btn :disabled="disabled" :text="dark" fab small :color="dark ? 'white' : 'primary'" @click="toggleAll('options')">
             <v-icon medium>{{ icons.prevAll }}</v-icon>
           </v-btn>
         </v-flex>
@@ -87,27 +86,26 @@
 
             <v-flex xs12 style="height: 350px; overflow-y: scroll;" class="pa-0 mt-0">
               <v-list :dense="dense" :dark="dark">
-                <template v-for="(position, i) in selected">
-                  <v-list-tile
-                    v-if="validFilter(position, search.selected)"
+                <template v-for="(item, i) in selectedInternal">
+                  <v-list-item
+                    v-if="validFilter(item, search.selected)"
                     :key="`selected-${i}`"
-                    avatar
                     ripple
                     :disabled="disabled"
-                    :class="getColor(position, 'selected')"
-                    @click="toggleToOptions(position)"
+                    :class="getColor(item, 'selected')"
+                    @click="toggleToOptions(item)"
                   >
-                    <v-list-tile-content>
-                      <h6 class="pa-0 ma-0">{{ items[position][keys.primary] }}</h6>
-                    </v-list-tile-content>
+                    <v-list-item-content>
+                      <h6 class="pa-0 ma-0">{{ item[itemText] }}</h6>
+                    </v-list-item-content>
 
-                    <v-list-tile-action>
-                      <small style="opacity: 0.7;">{{ items[position][keys.secondary] }}</small>
-                    </v-list-tile-action>
-                  </v-list-tile>
+                    <v-list-item-action v-if="itemAlt !== ''">
+                      <small style="opacity: 0.7;">{{ item[itemAlt] }}</small>
+                    </v-list-item-action>
+                  </v-list-item>
 
                   <v-divider
-                    v-if="i + 1 < selected.length && validFilter(position, search.selected)"
+                    v-if="i + 1 < selected.length && validFilter(item, search.selected)"
                     :key="i"
                   />
                 </template>
@@ -122,39 +120,62 @@
 
 <script>
 export default {
+  model: {
+    prop: 'selected',
+    event: 'change'
+  },
+
   props: {
+    selected: {
+      type: Array
+    },
+
     items: {
       type: Array,
-      required: true
+      required: false,
+      default () {
+        return []
+      }
     },
-    keys: {
-      type: Object,
-      required: true
+
+    itemText: {
+      type: String,
+      required: false,
+      default () {
+        return 'text'
+      }
     },
+
+    itemAlt: {
+      type: String,
+      required: false,
+      default () {
+        return ''
+      }
+    },
+
+    itemValue: {
+      type: String,
+      required: false,
+      default () {
+        return ''
+      }
+    },
+
     dense: {
       type: Boolean,
       default () {
         return false
       }
     },
+
     disabled: {
       type: Boolean,
       default () {
         return false
       }
     },
-    dark: {
-      type: Boolean,
-      default () {
-        return false
-      }
-    },
-    preSelected: {
-      type: Array,
-      default () {
-        return []
-      }
-    },
+
     i18n: {
       type: Object,
       default () {
@@ -167,6 +188,7 @@ export default {
         }
       }
     },
+
     icons: {
       type: Object,
       default () {
@@ -182,51 +204,95 @@ export default {
 
   data () {
     return {
-      options: [],
-      selected: [],
+      loaded: false,
       search: {
         options: '',
         selected: ''
       },
+
+      temporal: {
+        options: [],
+        selected: []
+      },
+
+      options: [],
+      selectedInternal: [],
+
       ctrlSelected: false,
-      shiftSelected: false,
-      tempSelected: [],
-      tempOptions: []
+      shiftSelected: false
     }
   },
 
   watch: {
+    /*
+     * =================================
+     *  Update available options
+     * =================================
+    */
     items (newVal, oldVal) {
       this.options = []
-      this.selected = []
       for (let i in newVal) {
-        if (this.preSelected.includes(newVal[i])) {
-          this.selected.push(parseInt(i))
-        } else {
-          this.options.push(parseInt(i))
+        if (!this.selectedInterval.includes(newVal[i])) {
+          this.options.push(Object.assign({}, newVal[i]))
         }
       }
     },
 
-    selected (newVal, oldVal) {
-      let selected = []
+    /*
+     * =================================
+     *  Broadcast to parent
+     * =================================
+    */
+    selectedInternal (newVal, oldVal) {
+      this.$emit('change', newVal.map((item, index, arr) => {
+        if (this.itemValue === '') {
+          return item
+        } else {
+          return item[this.itemValue]
+        }
+      }))
+    },
 
-      for (let i in newVal) {
-        selected.push(this.items[newVal[i]])
-      }
+    // /*
+    //  * =================================
+    //  *  Update selected items
+    //  * =================================
+    // */
+    // selected (newVal, oldVal) {
+    //   this.selectedInternal = []
 
-      this.$emit('selected', selected)
+    //   const items = this.options.filter((item, index, arr) => {
+    //     if (this.itemValue === '') {
+    //       return item
+    //     } else {
+    //       if (newVal.includes(item[this.itemValue])) {
+    //         return item
+    //       }
+    //     }
+    //   })
+
+    //   for (let i in newVal) {
+    //     if (options.includes(newVal[i])) {
+    //       this.selectedInternal.push(Object.assign({}, newVal[i]))
+    //       this.options.splice(this.options.indexOf(items.indexOf(newVal[i])), 1)
+    //     }
+    //   }
+    // }
+  },
+
+  computed: {
+    /*
+     * =================================
+     *  Get dark state
+     * =================================
+    */
+    dark () {
+      return this.$vuetify.theme.dark
     }
   },
 
   created () {
-    for (let i in this.items) {
-      if (this.preSelected.includes(this.items[i])) {
-        this.selected.push(parseInt(i))
-      } else {
-        this.options.push(parseInt(i))
-      }
-    }
+    this.options = Object.values(Object.assign({}, this.items))
 
     document.addEventListener('keydown', this.validateKey)
     document.addEventListener('keyup', this.removeKey)
@@ -238,14 +304,27 @@ export default {
   },
 
   methods: {
-    getColor (index, list = 'options') {
-      if (this[(list === 'options' ? 'tempSelected' : 'tempOptions')].includes(parseInt(index))) {
+    /*
+     * =================================
+     *  Get active color
+     *  @param item Object
+     *  @param list String
+     * =================================
+    */
+    getColor (item, list = 'options') {
+      if (this.temporal[(list === 'options' ? 'selected' : 'options')].includes(item)) {
         return 'primary white--text'
       } else {
         return ''
       }
     },
 
+    /*
+     * =================================
+     *  Key selector
+     *  @param e Event
+     * =================================
+    */
     validateKey (e) {
       if (e.keyCode === 16) {
         this.shiftSelected = true
@@ -254,6 +333,12 @@ export default {
       }
     },
 
+    /*
+     * =================================
+     *  Remove key selector
+     *  @param e Event
+     * =================================
+    */
     removeKey (e) {
       if ([16, 91].includes(e.keyCode)) {
         this.ctrlSelected = false
@@ -261,154 +346,207 @@ export default {
       }
     },
 
-    validFilter (pos, search) {
+    /*
+     * =================================
+     *  Filter validator
+     *  @param item Object
+     *  @param search String
+     * =================================
+    */
+    validFilter (item, search) {
+      // If search variable is empty
       if (search === '') {
         return true
       }
 
-      if (this.items[pos][this.keys.primary].toLowerCase().includes(search.toLowerCase())) {
+      // If item text (primary) contain search value
+      if (item[this.itemText].toLowerCase().includes(search.toLowerCase())) {
         return true
       }
 
-      if (this.items[pos][this.keys.secondary].toLowerCase().includes(search.toLowerCase())) {
+      // If item alt (secondary) contain search value
+      if (item[this.itemAlt].toLowerCase().includes(search.toLowerCase())) {
         return true
       }
     },
 
+    /*
+     * =================================
+     *  Toggle temporal options to final list
+     *  @param destination String
+     * =================================
+    */
     toggleToList (destination) {
+      // Validates destination list
       if (destination === 'selected') {
-        for (let i in this.tempSelected) {
-          let item = this.tempSelected[i]
+        // Iterate over selected temporal list
+        for (let i in this.temporal.selected) {
+          // Get index of temporal item from selected list
+          const validator = this.selectedInternal.indexOf(this.temporal.selected[i])
 
-          if (this.selected.indexOf(item) === -1) {
-            this.selected.push(item)
+          // Get index of temporal item from options list
+          const index = this.options.indexOf(this.temporal.selected[i])
+
+          // Validates if that item exists in final selected list
+          if (validator === -1) {
+            this.selectedInternal.push(Object.assign({}, this.options[index]))
           }
 
-          let pos = this.options.indexOf(item)
-
-          this.options.splice(pos, 1)
+          // Remove that index in options list
+          this.options.splice(index, 1)
         }
-
-        this.tempSelected = []
       } else {
-        for (let i in this.tempOptions) {
-          let item = this.tempOptions[i]
+        // Iterate over options temporal list
+        for (let i in this.temporal.options) {
+          // Get index of temporal item from options list
+          const validator = this.options.indexOf(this.temporal.options[i])
 
-          if (this.options.indexOf(item) === -1) {
-            this.options.push(item)
+          // Validates if that item exists in final options list
+          if (index === -1) {
+            this.options.push(this.temporal.options[i])
           }
 
-          let pos = this.selected.indexOf(item)
+          // Get index of temporal item from options list
+          const index = this.selectedInternal.indexOf(this.temporal.options[i])
 
-          this.selected.splice(pos, 1)
+          // Remove that index in options list
+          this.selectedInternal.splice(index, 1)
         }
-
-        this.tempOptions = []
-      }
-
-      this.sort()
-    },
-
-    toggleToSelected (index) {
-      index = parseInt(index)
-
-      if (this.tempSelected.includes(index)) {
-        let pos = this.tempSelected.indexOf(index)
-        this.tempSelected.splice(pos, 1)
-      } else if (!this.shiftSelected && !this.ctrlSelected) {
-        this.tempSelected = []
-        this.tempSelected.push(index)
-      } else if (this.shiftSelected && this.tempSelected.length === 0) {
-        this.tempSelected.push(index)
-      } else if (this.shiftSelected && this.tempSelected.length > 0) {
-        let flag = []
-
-        let first = this.tempSelected[0]
-
-        if (index > first) {
-          for (let i = first; i <= index; i++) {
-            flag.push(i)
-          }
-
-          this.tempSelected = flag
-        } else {
-          for (let i = index; i <= first; i++) {
-            flag.push(i)
-          }
-
-          this.tempSelected = flag
-        }
-      } else if (this.ctrlSelected && this.tempSelected.length === 0) {
-        this.tempSelected.push(index)
-      } else if (this.ctrlSelected && this.tempSelected.length > 0) {
-        this.tempSelected.push(index)
       }
     },
 
-    toggleToOptions (index) {
-      index = parseInt(index)
+    /*
+     * =================================
+     *  Temporal select item to selected temporal list
+     *  @param item Object
+     * =================================
+    */
+    toggleToSelected (item) {
+      // Validates if that item exists in selected temporal list
+      if (this.temporal.selected.includes(item)) {
+        // Get position of that item in temporal selected
+        const index = this.temporal.selected.indexOf(item)
 
-      if (this.tempOptions.includes(index)) {
-        let pos = this.tempOptions.indexOf(index)
-        this.tempOptions.splice(pos, 1)
-      } else if (!this.shiftSelected && !this.ctrlSelected) {
-        this.tempOptions = []
-        this.tempOptions.push(index)
-      } else if (this.shiftSelected && this.tempOptions.length === 0) {
-        this.tempOptions.push(index)
-      } else if (this.shiftSelected && this.tempOptions.length > 0) {
-        let flag = []
+        // Delete that item from selected temporal list
+        this.temporal.selected.splice(index, 1)
+      } else if (!this.shiftSelected && !this.ctrlSelected) { // Validates if shift and control is not selected
+        // Clear selected temporal list
+        this.temporal.selected = []
 
-        let first = this.tempOptions[0]
+        // Push that item into empty selected temporal list
+        this.temporal.selected.push(item)
+      } else if (this.shiftSelected) { // Validates if Shift is pressed
+        // Validates if selected temporal list is empty
+        if (this.temporal.selected.length === 0) {
+          this.temporal.selected.push(item) // Push that item into selected temporal list
+        } else { // If that list is not empty
+          const firstIndex = this.options.indexOf(this.temporal.selected[0]) // Get first index from options list
 
-        if (index > first) {
-          for (let i = first; i <= index; i++) {
-            flag.push(i)
+          const currentIndex = this.options.indexOf(item) // Get current index from options list
+
+          // Initialize required variables
+          let origin = null, destination = null, temporal = []
+
+          // Validates what is more greater
+          if (currentIndex > firstIndex) { // If current index is greater than first index
+            origin = firstIndex
+            destination = currentIndex
+          } else { // If current index is less than first indexx
+            origin = currentIndex
+            destination = firstIndex
           }
 
-          this.tempOptions = flag
-        } else {
-          for (let i = index; i <= first; i++) {
-            flag.push(i)
+          // Iterate over origin and destination
+          for (let i = origin; i <= destination; i++) {
+            // Push options into temporal variable
+            temporal.push(this.options[i])
           }
 
-          this.tempOptions = flag
+          // Assign temporal variable to selected temporal list
+          this.temporal.selected = Object.values(Object.assign({}, temporal))
+
+          // Clear temporal variable
+          temporal = []
         }
-      } else if (this.ctrlSelected && this.tempOptions.length === 0) {
-        this.tempOptions.push(index)
-      } else if (this.ctrlSelected && this.tempOptions.length > 0) {
-        this.tempOptions.push(index)
+
+      } else if (this.ctrlSelected) { // Validates if control is pressed
+        this.temporal.selected.push(item) // Push that item into selected temporal list
       }
     },
 
+    /*
+     * =================================
+     *  Temporal select item to options temporal list
+     *  @param item Object
+     * =================================
+    */
+    toggleToOptions (item) {
+      // Validates if that item exists in options temporal list
+      if (this.temporal.options.includes(item)) {
+        // Get position of that item in temporal options
+        const index = this.temporal.options.indexOf(item)
+
+        // Delete that item from options temporal list
+        this.temporal.options.splice(index, 1)
+      } else if (!this.shiftoptions && !this.ctrloptions) { // Validates if shift and control is not options
+        // Clear options temporal list
+        this.temporal.options = []
+
+        // Push that item into empty options temporal list
+        this.temporal.options.push(item)
+      } else if (this.shiftoptions) { // Validates if Shift is pressed
+        // Validates if options temporal list is empty
+        if (this.temporal.options.length === 0) {
+          this.temporal.options.push(item) // Push that item into options temporal list
+        } else { // If that list is not empty
+          const firstIndex = this.options.indexOf(this.temporal.options[0]) // Get first index from options list
+
+          const currentIndex = this.options.indexOf(item) // Get current index from options list
+
+          // Initialize required variables
+          let origin = null, destination = null, temporal = []
+
+          // Validates what is more greater
+          if (currentIndex > firstIndex) { // If current index is greater than first index
+            origin = firstIndex
+            destination = currentIndex
+          } else { // If current index is less than first indexx
+            origin = currentIndex
+            destination = firstIndex
+          }
+
+          // Iterate over origin and destination
+          for (let i = origin; i <= destination; i++) {
+            // Push options into temporal variable
+            temporal.push(this.options[i])
+          }
+
+          // Assign temporal variable to options temporal list
+          this.temporal.options = Object.values(Object.assign({}, temporal))
+
+          // Clear temporal variable
+          temporal = []
+        }
+
+      } else if (this.ctrloptions) { // Validates if control is pressed
+        this.temporal.options.push(item) // Push that item into options temporal list
+      }
+    },
+
+    /*
+     * =================================
+     *  Toggle all elements between lists
+     *  @param destination String
+     * =================================
+    */
     toggleAll (destination) {
-      let origin = destination === 'selected' ? 'options' : 'selected'
+      let origin = destination === 'selected' ? 'options' : 'selectedInternal'
       
-      for (let i in this[origin]) {
-        this[destination].push(this[origin][i])
-      }
+      destination = destination === 'selected' ? 'selectedInternal' : 'options' 
 
+      this[destination] = Object.values(Object.assign({}, this[origin]))
+      
       this[origin] = []
-
-      this.sort()
-    },
-
-    sort () {
-      if (this.selected.length > 0) {
-        this.selected.sort((a, b) => {
-          try {
-            return this.items[a][this.keys.primary].localeCompare(this.items[b][this.keys.primary])
-          } catch (e) {}
-        })
-      }
-
-      if (this.options.length > 0) {
-        this.options.sort((a, b) => {
-          try {
-            return this.items[a][this.keys.primary].localeCompare(this.items[b][this.keys.primary])
-          } catch (e) {}
-        })
-      }
     }
   }
 }
@@ -425,7 +563,7 @@ export default {
       td {
         padding: 5px;
         display: flex;
-        align-items: center;
+        align-options: center;
         justify-content: space-between;
         transition: all 200ms ease;
 

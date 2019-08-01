@@ -1,37 +1,45 @@
 Arguments: 
-  /Users/mochi/.nvm/versions/node/v11.10.0/bin/node /usr/local/Cellar/yarn/1.13.0/libexec/bin/yarn.js publish
+  /Users/mochi/.nvm/versions/node/v11.2.0/bin/node /usr/local/Cellar/yarn/1.16.0/libexec/bin/yarn.js publish
 
 PATH: 
-  /Users/mochi/.rvm/gems/ruby-2.6.0/bin:/Users/mochi/.rvm/gems/ruby-2.6.0@global/bin:/Users/mochi/.rvm/rubies/ruby-2.6.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/mochi/flutter/bin:/Users/mochi/.rvm/bin
+  /Users/mochi/.rvm/gems/ruby-2.6.0/bin:/Users/mochi/.rvm/gems/ruby-2.6.0@global/bin:/Users/mochi/.rvm/rubies/ruby-2.6.0/bin:/Users/mochi/.nvm/versions/node/v11.2.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/mochi/bin:/Users/mochi/flutter/bin:/Users/mochi/.rvm/bin
 
 Yarn version: 
-  1.13.0
+  1.16.0
 
 Node version: 
-  11.10.0
+  11.2.0
 
 Platform: 
   darwin x64
 
 Trace: 
   Error: canceled
-      at Interface.<anonymous> (/usr/local/Cellar/yarn/1.13.0/libexec/lib/cli.js:125657:13)
-      at Interface.emit (events.js:197:13)
-      at Interface._ttyWrite (readline.js:799:16)
-      at ReadStream.onkeypress (readline.js:184:10)
-      at ReadStream.emit (events.js:197:13)
+      at Interface.<anonymous> (/usr/local/Cellar/yarn/1.16.0/libexec/lib/cli.js:125850:13)
+      at Interface.emit (events.js:182:13)
+      at Interface._ttyWrite (readline.js:818:16)
+      at ReadStream.onkeypress (readline.js:178:10)
+      at ReadStream.emit (events.js:182:13)
       at emitKeys (internal/readline.js:424:14)
       at emitKeys.next (<anonymous>)
-      at ReadStream.onData (readline.js:1071:36)
-      at ReadStream.emit (events.js:197:13)
-      at addChunk (_stream_readable.js:288:12)
+      at ReadStream.onData (readline.js:1055:36)
+      at ReadStream.emit (events.js:182:13)
+      at addChunk (_stream_readable.js:287:12)
 
 npm manifest: 
   {
     "name": "vuetify-dual-list",
-    "version": "1.0.0",
+    "version": "1.0.6",
     "description": "An DualList component for Vuetify (VueJS)",
-    "keywords": ["duallist", "dual list", "vue", "vuetify", "goldenm", "software", "duallist for vue"],
+    "keywords": [
+      "duallist",
+      "dual list",
+      "vue",
+      "vuetify",
+      "goldenm",
+      "software",
+      "duallist for vue"
+    ],
     "main": "index.js",
     "repository": {
       "url": "https://github.com/goldenm-software/vuetify-duallist",
@@ -41,7 +49,10 @@ npm manifest:
       "Kenny Mochizuki Escalona <kenny@goldenmcorp.com>"
     ],
     "author": "Golden M Software <software@goldenmcorp.com>",
-    "files": ["index.js", "lib/*.vue"],
+    "files": [
+      "index.js",
+      "lib/*.vue"
+    ],
     "license": "MIT",
     "private": false
   }

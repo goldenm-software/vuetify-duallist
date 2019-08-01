@@ -14,7 +14,7 @@ yarn add vuetify-dual-list
 
 ```vue
 <template>
-  <dual-list :icons="icons" :preSelected="preSelected" :items="items" :keys="keys" :i18n="i18n" :dense="dense" :dark="dark" @selected="attachItems" />
+  <dual-list :icons="icons" :items="items" v-model="selected" item-text="value" item-value="key" :dense="dense" />
 </template>
 
 <script>
@@ -28,7 +28,6 @@ export default {
   data () {
     return {
       items: [], // Required
-      keys: { primary: '', secondary: '' }, // Required
       i18n: { // Optional
         vuetifyNotFound: '',
         list1: '',
@@ -42,15 +41,8 @@ export default {
         next: '',
         nextAll: ''
       },
-      preSelected: [] // Optional
-      dense: false, // Optional
-      dark: false // Optional
-    }
-  },
-
-  methods: {
-    attachItems (newItems) {
-      // ...
+      selected: [] // Required - NOTE: Actually we doesn't support all functions related to v-model, it means, if you update "selected", the component didn't update automaticly
+      dense: false // Optional
     }
   }
 }

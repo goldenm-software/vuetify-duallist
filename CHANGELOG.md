@@ -1,5 +1,17 @@
 # vuetify-dual-list
 
+## Version 1.0.6
+### Changed
+* Bug fixed
+* Props changed
+
+### Added
+* Vuetify 2 Arcadia support
+
+## Version 1.0.5
+### Changed
+* Bug fixed
+
 ## Version 1.0.4
 ### Changed
 * Bug fixed
